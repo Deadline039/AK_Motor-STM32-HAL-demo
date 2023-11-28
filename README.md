@@ -6,7 +6,7 @@ HAL Version: V1.8.1 / 24-June-2022
 
 ARM Clang 6.21，C11/C++11标准。可以在ARM CC 5.06下编译通过
 
-## 上位机使用 ##
+# 上位机使用 #
 
 感谢[Nikodem Bartnik](https://github.com/NikodemBartnik)提供的Python代码
 
@@ -28,7 +28,12 @@ python serial_com.py
 
 选择正确的COM口，点Connect连接，Set Origin可以将当前位置设为原点。
 
-拖动Trackbar就可以直接让电机运动。Position可以让电机转角度，Speed可以以指定速度旋转，Current可以作为扭矩使用。具体参考代码注释。
+拖动Trackbar就可以直接让电机运动。Position可以让电机转角度，Speed可以以指定速度旋转，Current可以作为扭矩使用。具体参考代码注释和官方手册。
 
 <img src="./assets/Snipaste_2023-11-28_16-44-53.png" style="zoom:67%;" />
 
+# 参考 #
+
+https://github.com/Yangwen-li13/CubeMars-AK60-6/
+
+https://github.com/NikodemBartnik/Overpowered-Robotic-Chassis
