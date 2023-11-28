@@ -1,4 +1,4 @@
-# STm32 T-motor AK80-8 示例代码 #
+# STM32 T-motor AK80-8 示例代码 #
 
 使用STM32F429驱动，CAN ID为1，CAN波特率为1Mbps
 
