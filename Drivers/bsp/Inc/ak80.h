@@ -51,5 +51,3 @@ void comm_can_set_pos_spd(uint8_t controller_id,
                           int16_t RPA);
 
 #endif  // !__AK80_H
-
-#ifnd

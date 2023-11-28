@@ -210,7 +210,7 @@
         "<virtual_root>/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_ll_fsmc.c",
         "<virtual_root>/Drivers/bsp/ak80_8.c"
       ],
-      "toolchain": "AC6",
+      "toolchain": "AC5",
       "compileConfig": {
         "cpuType": "Cortex-M4",
         "floatingPointHardware": "single",
