@@ -4,7 +4,7 @@
 
 HAL Version: V1.8.1 / 24-June-2022
 
-ARM Clang 6.21，可以在ARM CC 5.06下编译通过
+ARM Clang 6.21，C11/C++11标准。可以在ARM CC 5.06下编译通过
 
 ## 上位机使用 ##
 
