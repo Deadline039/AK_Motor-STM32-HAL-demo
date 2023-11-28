@@ -45,7 +45,7 @@ void comm_can_set_duty(uint8_t controller_id, float duty) {
     param_limit(&duty, MAX_PWM);
     int32_t send_index = 0;
     uint8_t buffer[4];
-    buffer_append_int32(buffer, (int32_t)(duty * 100000.0), &send_index);
+    buffer_append_int32(buffer, (int32_t)(duty * 100000.0f), &send_index);
     AKcmd_can_transmit_eid(canid_append_mode(controller_id, AK_PWM), buffer,
                            send_index);
 }
@@ -60,7 +60,7 @@ void comm_can_set_current(uint8_t controller_id, float current) {
     param_limit(&current, MAX_CURRENT);
     int32_t send_index = 0;
     uint8_t buffer[4];
-    buffer_append_int32(buffer, (int32_t)(current * 1000.0), &send_index);
+    buffer_append_int32(buffer, (int32_t)(current * 1000.0f), &send_index);
     AKcmd_can_transmit_eid(canid_append_mode(controller_id, AK_CURRENT), buffer,
                            send_index);
 }
@@ -74,7 +74,7 @@ void comm_can_set_cb(uint8_t controller_id, float current) {
     param_limit(&current, MAX_CURRENT);
     int32_t send_index = 0;
     uint8_t buffer[4];
-    buffer_append_int32(buffer, (int32_t)(current * 1000.0), &send_index);
+    buffer_append_int32(buffer, (int32_t)(current * 1000.0f), &send_index);
     AKcmd_can_transmit_eid(canid_append_mode(controller_id, AK_CURRENT_BRAKE),
                            buffer, send_index);
 }
@@ -140,7 +140,6 @@ void comm_can_set_pos_spd(uint8_t controller_id,
                           float pos,
                           int16_t spd,
                           int16_t RPA) {
-    pos *= 10000.0f;
     param_limit(&pos, MAX_POSITION);
     if (RPA > 32767) {
         RPA = 32767;
@@ -149,7 +148,7 @@ void comm_can_set_pos_spd(uint8_t controller_id,
     int32_t send_index = 0;
     int32_t send_index1 = 0;
     uint8_t buffer[4];
-    buffer_append_int32(buffer, (int32_t)(pos * 10000.0), &send_index);
+    buffer_append_int32(buffer, (int32_t)(pos * 10000.0f), &send_index);
     buffer_append_int16(buffer, spd, &send_index1);
     buffer_append_int16(buffer, RPA, &send_index1);
     AKcmd_can_transmit_eid(

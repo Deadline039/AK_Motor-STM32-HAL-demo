@@ -17,13 +17,13 @@
  * @brief 电机阈值控制
  *
  */
-#define MAX_PWM 100000.0F               /* 最大占空比 */
-#define MAX_CURRENT 60000.0F            /* 最大电流 */
-#define MAX_VELOCITY 100000.0F          /* 最大速率 */
-#define MAX_POSITION 360000000.0F       /* 最大位置 */
-#define MAX_POSITION_VELOCITY 32767.0F  /* 旋转最大速率 */
-#define MIN_POSITION_VELOCITY -32768.0F /* 旋转最小速率 */
-#define MAX_ACCELERATION 400000.0F      /* 最大加速度 */
+#define MAX_PWM               100000.0F    /* 最大占空比 */
+#define MAX_CURRENT           60000.0F     /* 最大电流 */
+#define MAX_VELOCITY          100000.0F    /* 最大速率 */
+#define MAX_POSITION          360000000.0F /* 最大位置 */
+#define MAX_POSITION_VELOCITY 32767.0F     /* 旋转最大速率 */
+#define MIN_POSITION_VELOCITY -32768.0F    /* 旋转最小速率 */
+#define MAX_ACCELERATION      400000.0F    /* 最大加速度 */
 
 /**
  * @brief 电机模式
