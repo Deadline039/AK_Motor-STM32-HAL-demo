@@ -14,9 +14,21 @@ ARM Clang 6.21，可以在ARM CC 5.06下编译通过
 
 将STM32F429的串口1通过USB to TTL连接到电脑，然后给电机和单片机上电
 
-打开终端运行以下命令：
+打开终端运行以下命令安装依赖：
 
 ```
 pip install -r requirements.txt
+```
+
+输入以下命令打开上位机
+
+```
 python serial_com.py
 ```
+
+选择正确的COM口，点Connect连接，Set Origin可以将当前位置设为原点。
+
+拖动Trackbar就可以直接让电机运动。Position可以让电机转角度，Speed可以以指定速度旋转，Current可以作为扭矩使用。具体参考代码注释。
+
+<img src="./assets/Snipaste_2023-11-28_16-44-53.png" style="zoom:67%;" />
+

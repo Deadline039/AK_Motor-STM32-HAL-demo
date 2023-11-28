@@ -1,7 +1,7 @@
 /**
  * @file    ak80.h
  * @author  Deadline--
- * @brief
+ * @brief   AK80驱动代码
  * @version 0.1
  * @date    2023-11-27
  */

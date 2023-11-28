@@ -1,7 +1,7 @@
 /**
  * @file    ak80.c
  * @author  Deadline--
- * @brief
+ * @brief   AK80驱动代码
  * @version 0.1
  * @date    2023-11-27
  * @see     https://github.com/Yangwen-li13/CubeMars-AK60-6/
