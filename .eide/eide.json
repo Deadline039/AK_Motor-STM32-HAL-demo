@@ -1,5 +1,5 @@
 {
-  "name": "CubeMars_AK80-8_demo",
+  "name": "AK_motor_demo",
   "type": "ARM",
   "dependenceList": [],
   "srcDirs": [
@@ -13,7 +13,7 @@
         "name": "Application",
         "files": [
           {
-            "path": "Application/Src/main.c"
+            "path": "Application/Src/main.cpp"
           },
           {
             "path": "Application/Src/stm32f4xx_it.c"
@@ -32,7 +32,7 @@
             "name": "bsp",
             "files": [
               {
-                "path": "Drivers/bsp/Src/ak80.c"
+                "path": "Drivers/bsp/Src/ak_motor.cpp"
               },
               {
                 "path": "Drivers/bsp/Src/buffer_append.c"
@@ -208,9 +208,10 @@
         "<virtual_root>/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_flash_ramfunc.c",
         "<virtual_root>/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_dma2d.c",
         "<virtual_root>/Drivers/STM32F4xx_HAL_Driver/stm32f4xx_ll_fsmc.c",
-        "<virtual_root>/Drivers/bsp/ak80_8.c"
+        "<virtual_root>/Drivers/bsp/ak80_8.c",
+        "<virtual_root>/Drivers/bsp/ak_motor.c"
       ],
-      "toolchain": "AC5",
+      "toolchain": "AC6",
       "compileConfig": {
         "cpuType": "Cortex-M4",
         "floatingPointHardware": "single",

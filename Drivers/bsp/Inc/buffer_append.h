@@ -40,5 +40,7 @@ float buffer_get_float16(const uint8_t *buffer, float scale, int32_t *index);
 float buffer_get_float32(const uint8_t *buffer, float scale, int32_t *index);
 double buffer_get_double64(const uint8_t *buffer, double scale, int32_t *index);
 float buffer_get_float32_auto(const uint8_t *buffer, int32_t *index);
+int float_to_uint(float x, float x_min, float x_max, uint8_t bits) ;
+float uint_to_float(int x_int, float x_min, float x_max, uint8_t bits) ;
 
 #endif /* BUFFER_H_ */

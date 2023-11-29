@@ -1,7 +1,7 @@
 /*
-        Copyright 2012-2018 Benjamin Vedder	benjamin@vedder.se
+    Copyright 2012-2018 Benjamin Vedder	benjamin@vedder.se
 
-        This program is free software: you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    */
+*/
 
 #include "buffer_append.h"
 #include <math.h>
@@ -195,4 +195,28 @@ float buffer_get_float32_auto(const uint8_t* buffer, int32_t* index) {
     }
 
     return ldexpf(sig, e);
+}
+
+int float_to_uint(float x, float x_min, float x_max, uint8_t bits) {
+    // Converts a float to an unsigned int, given range and number of bits
+    float span = x_max - x_min;
+    float offset = x_min;
+    unsigned int pgg = 0;
+    if (bits == 12) {
+        pgg = (unsigned int)((x - offset) * 4095.0 / span);
+    } else if (bits == 16) {
+        pgg = (unsigned int)((x - offset) * 65535.0 / span);
+    }
+    return pgg;
+}
+float uint_to_float(int x_int, float x_min, float x_max, uint8_t bits) {
+    float span = x_max - x_min;
+    float offset = x_min;
+    float pgg = 0;
+    if (bits == 12) {
+        pgg = ((float)x_int) * span / 4095.0 + offset;
+    } else if (bits == 16) {
+        pgg = ((float)x_int) * span / 65535.0 + offset;
+    }
+    return pgg;
 }

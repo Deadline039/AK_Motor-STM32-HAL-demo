@@ -95,33 +95,26 @@ uint8_t CAN1_Init(uint32_t tsjw,
 void CAN1_RX0_IRQHandler(void) {
     HAL_CAN_IRQHandler(&CAN1_Handler);
 }
-#endif /* CAN_RX0_INT_ENABLE */
-
 /**
- * @brief 获得电机状态参数
+ * @brief CAN RX FIFO0挂起中断回调
  *
- * @param can_msg CAN报文
- * @param ak80_ptr 电机结构体指针
+ * @param hcan
  */
-void can_get_moto_measure(uint8_t* can_msg) {
-    float motor_pos, motor_spd, motor_current;
-    uint8_t temperature, error;
-    motor_pos = (float)((int16_t)(can_msg[0] << 8 | can_msg[1])) * 0.1f;
-    motor_spd = (float)((int16_t)(can_msg[2] << 8 | can_msg[3])) * 10.0f;
-    motor_current = (float)((int16_t)(can_msg[4] << 8 | can_msg[5])) * 0.01f;
-    temperature = can_msg[6];
-    error = can_msg[7];
-    printf("%.2f,%.2f,%.2f,%d,%d\r\n", motor_pos, motor_spd, motor_current,
-           temperature, error);
-}
-
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan) {
     if (hcan->Instance == CAN1) {
         uint8_t msg[8];
         HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &CAN1_RxHeader, msg);
-        can_get_moto_measure(msg);
+        if (CAN1_RxHeader.IDE == CAN_ID_STD) {
+            /* 标准帧数据, 运控模式 */
+            ak_can_get_measure(msg[0], msg, AK_MIT_Mode);
+        } else if (CAN1_RxHeader.IDE == CAN_ID_EXT) {
+            /* 扩展帧数据, 伺服模式 */
+            ak_can_get_measure((uint8_t)(CAN1_RxHeader.ExtId & 0xFF), msg,
+                               AK_Servo_Mode);
+        }
     }
 }
+#endif /* CAN_RX0_INT_ENABLE */
 
 /**
  * @brief CAN底层驱动
@@ -147,7 +140,7 @@ void HAL_CAN_MspInit(CAN_HandleTypeDef* hcan) {
     }
 }
 /**
- * @brief 给AK电机发送消息, 扩展帧消息
+ * @brief 伺服模式给AK电机发送消息, 扩展帧
  *
  * @param id 发送ID
  * @param msg 数据
@@ -162,8 +155,50 @@ uint8_t AKcmd_can_transmit_eid(uint32_t id, uint8_t* msg, uint8_t len) {
     uint16_t t = 0;
     uint32_t TxMailbox = CAN_TX_MAILBOX0;
 
-    CAN1_TxHeader.IDE = CAN_ID_EXT; /* 使用标准帧 */
+    CAN1_TxHeader.IDE = CAN_ID_EXT; /* 使用扩展帧 */
     CAN1_TxHeader.StdId = 0;        /* 标准标识符 */
+    CAN1_TxHeader.ExtId = id;       /* 扩展标识符(29位) */
+
+    CAN1_TxHeader.RTR = CAN_RTR_DATA; /* 数据帧 */
+    CAN1_TxHeader.DLC = len;
+
+    if (HAL_CAN_AddTxMessage(&CAN1_Handler, &CAN1_TxHeader, msg, &TxMailbox) !=
+        HAL_OK) {
+        /* 发送消息 */
+        return 1;
+    }
+
+    while (HAL_CAN_GetTxMailboxesFreeLevel(&CAN1_Handler) != 3) {
+        /* 等待发送完成,所有邮箱为空 */
+        t++;
+        if (t > 0xFFF) {
+            HAL_CAN_AbortTxRequest(&CAN1_Handler, TxMailbox);
+            /* 超时，直接中止邮箱的发送请求 */
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+/**
+ * @brief 运控模式给AK电机发送消息, 标准帧
+ *
+ * @param id 发送ID
+ * @param msg 数据
+ * @param len 数据长度
+ * @return uint8_t 0-成功; 1-添加发送邮箱失败; 2-发送超时
+ */
+uint8_t AKcmd_can_transmit_mit(uint32_t id, uint8_t* msg, uint8_t len) {
+    if (len > 8) {
+        /* 长度限制8 */
+        len = 8;
+    }
+    uint16_t t = 0;
+    uint32_t TxMailbox = CAN_TX_MAILBOX0;
+
+    CAN1_TxHeader.IDE = CAN_ID_STD; /* 使用标准帧 */
+    CAN1_TxHeader.StdId = id;       /* 标准标识符 */
     CAN1_TxHeader.ExtId = id;       /* 扩展标识符(29位) */
 
     CAN1_TxHeader.RTR = CAN_RTR_DATA; /* 数据帧 */
