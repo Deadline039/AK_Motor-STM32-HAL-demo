@@ -13,7 +13,7 @@ for port, desc, hwid in sorted(ports):
 root = tk.Tk()
 root.geometry('600x600')
 root.resizable(False, False)
-root.title('AK Servo Mode Controler')
+root.title('AK Servo Mode Controller')
 
 # slider current value
 value_position = tk.DoubleVar()

@@ -44,6 +44,8 @@ typedef struct {
 AK_Motor_Class::AK_Motor_Class(uint32_t ID, AK_motor_model_t model) {
     id_conflict = false;
 
+    controller_id = ID;
+    motor_model = model;
     /* 将对象加入到链表中 */
     if (head_ptr == NULL) {
         head_ptr = (list_head*)malloc(sizeof(list_head));
@@ -63,9 +65,6 @@ AK_Motor_Class::AK_Motor_Class(uint32_t ID, AK_motor_model_t model) {
     new_node = (AK_Motor_Linklist_t*)malloc(sizeof(AK_Motor_Linklist_t));
     new_node->ak_motor_instance = this;
     list_add(&new_node->ak_motor_list, head_ptr);
-
-    controller_id = ID;
-    motor_model = model;
 }
 /**
  * @brief Destroy the ak motor class::ak motor class object
@@ -204,11 +203,7 @@ static inline void param_limit(float* value, float min_value, float max_value) {
  * @param duty 占空比, 范围`0 ~ 1.0`
  */
 void AK_Motor_Class::comm_can_set_duty(float duty) {
-    if (duty > MAX_PWM) {
-        duty = MAX_PWM;
-    } else if (duty < 0) {
-        duty = 0;
-    }
+    param_limit(duty, 0, MAX_PWM);
     int32_t send_index = 0;
     uint8_t buffer[4];
     buffer_append_int32(buffer, (int32_t)(duty * 100000.0f), &send_index);
@@ -262,10 +257,7 @@ void AK_Motor_Class::comm_can_set_rpm(float rpm) {
  * @note 默认速度12000erpm, 加速度40000erpm
  */
 void AK_Motor_Class::comm_can_set_pos(float pos) {
-    /* 转到最大位置, 从0开始 */
-    if (pos > MAX_POSITION) {
-        pos = MAX_POSITION;
-    }
+    param_limit(pos, -MAX_POSITION, MAX_POSITION);
     int32_t send_index = 0;
     uint8_t buffer[4];
     buffer_append_int32(buffer, (int32_t)(pos * 10000.0f), &send_index);

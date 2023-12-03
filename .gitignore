@@ -17,3 +17,5 @@
 *.ept
 *.eide-template
 *.uvguix.*
+AK_motor_demo.uvprojx
+AK_motor_demo.uvoptx
