@@ -203,7 +203,7 @@ static inline void param_limit(float* value, float min_value, float max_value) {
  * @param duty 占空比, 范围`0 ~ 1.0`
  */
 void AK_Motor_Class::comm_can_set_duty(float duty) {
-    param_limit(duty, 0, MAX_PWM);
+    param_limit(&duty, 0, MAX_PWM);
     int32_t send_index = 0;
     uint8_t buffer[4];
     buffer_append_int32(buffer, (int32_t)(duty * 100000.0f), &send_index);
@@ -257,7 +257,7 @@ void AK_Motor_Class::comm_can_set_rpm(float rpm) {
  * @note 默认速度12000erpm, 加速度40000erpm
  */
 void AK_Motor_Class::comm_can_set_pos(float pos) {
-    param_limit(pos, -MAX_POSITION, MAX_POSITION);
+    param_limit(&pos, -MAX_POSITION, MAX_POSITION);
     int32_t send_index = 0;
     uint8_t buffer[4];
     buffer_append_int32(buffer, (int32_t)(pos * 10000.0f), &send_index);
